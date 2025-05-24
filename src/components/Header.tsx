@@ -1,7 +1,8 @@
 
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { Menu, X, Heart, Calendar, Users, Phone, Play, DollarSign } from 'lucide-react';
+import { Menu, X, Heart, Calendar, Users, Phone, Play, DollarSign, Settings } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -22,11 +23,13 @@ const Header = () => {
         <div className="flex justify-between items-center h-20">
           {/* Logo */}
           <div className="flex items-center">
-            <img 
-              src="/lovable-uploads/e0c5fe70-273d-4e8b-9066-e25340499af4.png" 
-              alt="Centro Cristiano Casa de Provisión" 
-              className="h-16 w-auto"
-            />
+            <Link to="/">
+              <img 
+                src="/lovable-uploads/e0c5fe70-273d-4e8b-9066-e25340499af4.png" 
+                alt="Centro Cristiano Casa de Provisión" 
+                className="h-16 w-auto"
+              />
+            </Link>
           </div>
 
           {/* Desktop Navigation */}
@@ -41,6 +44,13 @@ const Header = () => {
                 {item.name}
               </a>
             ))}
+            <Link
+              to="/login"
+              className="text-gray-700 hover:text-church-gold px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 flex items-center gap-1 ml-4 border-l border-gray-200 pl-4"
+            >
+              <Settings className="h-4 w-4" />
+              Panel
+            </Link>
           </div>
 
           {/* Mobile menu button */}
@@ -70,6 +80,14 @@ const Header = () => {
                   {item.name}
                 </a>
               ))}
+              <Link
+                to="/login"
+                className="text-gray-700 hover:text-church-gold block px-3 py-2 rounded-md text-base font-medium transition-colors duration-200 flex items-center gap-2 border-t border-gray-200 mt-2 pt-4"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                <Settings className="h-5 w-5" />
+                Panel Administrativo
+              </Link>
             </div>
           </div>
         )}
