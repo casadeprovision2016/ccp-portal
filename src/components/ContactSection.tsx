@@ -1,32 +1,46 @@
 
-import { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
-import { MapPin, Phone, Mail, Clock, MessageCircle, Send } from 'lucide-react';
+import { MapPin, Phone, Mail, Clock, MessageSquare } from 'lucide-react';
 
 const ContactSection = () => {
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    phone: '',
-    message: ''
-  });
+  const contactInfo = [
+    {
+      icon: MapPin,
+      title: "Dirección",
+      details: [
+        "Calle Arana, 28",
+        "Vitoria-Gasteiz, Álava",
+        "España, 01002"
+      ],
+      color: "text-church-gold"
+    },
+    {
+      icon: Phone,
+      title: "WhatsApp",
+      details: ["+34 627 10 87 30"],
+      color: "text-green-600"
+    },
+    {
+      icon: Mail,
+      title: "Email",
+      details: ["casadeprovision@gmail.com"],
+      color: "text-church-blue"
+    },
+    {
+      icon: Clock,
+      title: "Horario de Oficina",
+      details: [
+        "Martes y Viernes 18:30 - 19:00",
+        "Domingo después del culto"
+      ],
+      color: "text-purple-600"
+    }
+  ];
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    console.log('Formulario enviado:', formData);
-    // Aquí se implementaría el envío del formulario
-    alert('¡Gracias por tu mensaje! Te contactaremos pronto.');
-    setFormData({ name: '', email: '', phone: '', message: '' });
-  };
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    });
+  const handleWhatsApp = () => {
+    const message = encodeURIComponent("Hola, me gustaría obtener más información sobre Centro Cristiano Casa de Provisión.");
+    window.open(`https://wa.me/34627108730?text=${message}`, '_blank');
   };
 
   return (
@@ -34,166 +48,99 @@ const ContactSection = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-bold text-church-blue-dark mb-6">
-            Contáctanos
+            Contacto
           </h2>
           <p className="text-xl text-gray-700 max-w-3xl mx-auto">
-            Estamos aquí para ti. No dudes en contactarnos para cualquier consulta o oración
+            Estamos aquí para servirte. No dudes en contactarnos para cualquier consulta o visita
           </p>
         </div>
 
         <div className="grid lg:grid-cols-2 gap-12">
-          {/* Contact Form */}
-          <Card className="bg-white shadow-xl">
-            <CardHeader>
-              <CardTitle className="text-2xl text-church-blue-dark flex items-center gap-2">
-                <Mail className="h-6 w-6 text-church-gold" />
-                Envíanos un Mensaje
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <form onSubmit={handleSubmit} className="space-y-6">
-                <div className="grid md:grid-cols-2 gap-4">
-                  <div>
-                    <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
-                      Nombre Completo
-                    </label>
-                    <Input
-                      id="name"
-                      name="name"
-                      value={formData.name}
-                      onChange={handleInputChange}
-                      required
-                      className="w-full"
-                      placeholder="Tu nombre"
-                    />
-                  </div>
-                  <div>
-                    <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-2">
-                      Teléfono
-                    </label>
-                    <Input
-                      id="phone"
-                      name="phone"
-                      value={formData.phone}
-                      onChange={handleInputChange}
-                      className="w-full"
-                      placeholder="Tu teléfono"
-                    />
-                  </div>
-                </div>
-                
-                <div>
-                  <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
-                    Correo Electrónico
-                  </label>
-                  <Input
-                    id="email"
-                    name="email"
-                    type="email"
-                    value={formData.email}
-                    onChange={handleInputChange}
-                    required
-                    className="w-full"
-                    placeholder="tu@email.com"
-                  />
-                </div>
-
-                <div>
-                  <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-2">
-                    Mensaje
-                  </label>
-                  <Textarea
-                    id="message"
-                    name="message"
-                    rows={5}
-                    value={formData.message}
-                    onChange={handleInputChange}
-                    required
-                    className="w-full"
-                    placeholder="Escribe tu mensaje aquí..."
-                  />
-                </div>
-
-                <Button 
-                  type="submit"
-                  className="w-full bg-church-gold hover:bg-church-gold-dark text-white font-semibold text-lg py-3"
-                  size="lg"
-                >
-                  <Send className="mr-2 h-5 w-5" />
-                  Enviar Mensaje
-                </Button>
-              </form>
-            </CardContent>
-          </Card>
-
-          {/* Contact Information and Map */}
+          {/* Contact Information */}
           <div className="space-y-8">
-            {/* Contact Info */}
-            <Card className="bg-white shadow-xl">
-              <CardHeader>
-                <CardTitle className="text-2xl text-church-blue-dark">Información de Contacto</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-6">
-                <div className="flex items-start gap-4">
-                  <MapPin className="h-6 w-6 text-church-gold mt-1 flex-shrink-0" />
-                  <div>
-                    <h4 className="font-semibold text-church-blue-dark mb-1">Dirección</h4>
-                    <p className="text-gray-600">
-                      Av. Principal 123<br />
-                      Barrio Centro<br />
-                      Ciudad, Estado 12345
-                    </p>
-                  </div>
-                </div>
-
-                <div className="flex items-start gap-4">
-                  <Phone className="h-6 w-6 text-church-gold mt-1 flex-shrink-0" />
-                  <div>
-                    <h4 className="font-semibold text-church-blue-dark mb-1">Teléfono</h4>
-                    <p className="text-gray-600">(11) 9876-5432</p>
-                  </div>
-                </div>
-
-                <div className="flex items-start gap-4">
-                  <Mail className="h-6 w-6 text-church-gold mt-1 flex-shrink-0" />
-                  <div>
-                    <h4 className="font-semibold text-church-blue-dark mb-1">Email</h4>
-                    <p className="text-gray-600">contacto@casadeprovision.org</p>
-                  </div>
-                </div>
-
-                <div className="flex items-start gap-4">
-                  <Clock className="h-6 w-6 text-church-gold mt-1 flex-shrink-0" />
-                  <div>
-                    <h4 className="font-semibold text-church-blue-dark mb-1">Horarios de Oficina</h4>
-                    <div className="text-gray-600 space-y-1">
-                      <p>Lunes - Viernes: 9:00 AM - 5:00 PM</p>
-                      <p>Sábado: 9:00 AM - 1:00 PM</p>
-                      <p>Domingo: Después del culto</p>
+            <h3 className="text-2xl font-bold text-church-blue-dark mb-6">
+              Información de Contacto
+            </h3>
+            
+            <div className="grid md:grid-cols-2 gap-6">
+              {contactInfo.map((info, index) => (
+                <Card key={index} className="bg-white shadow-lg hover:shadow-xl transition-shadow duration-300">
+                  <CardHeader className="pb-2">
+                    <div className="flex items-center gap-3">
+                      <info.icon className={`h-6 w-6 ${info.color}`} />
+                      <CardTitle className="text-lg text-church-blue-dark">{info.title}</CardTitle>
                     </div>
-                  </div>
-                </div>
+                  </CardHeader>
+                  <CardContent>
+                    {info.details.map((detail, idx) => (
+                      <p key={idx} className="text-gray-600 leading-relaxed">
+                        {detail}
+                      </p>
+                    ))}
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
 
-                <Button 
-                  className="w-full bg-green-600 hover:bg-green-700 text-white font-semibold"
-                  size="lg"
-                >
-                  <MessageCircle className="mr-2 h-5 w-5" />
-                  Contactar por WhatsApp
-                </Button>
+            {/* WhatsApp CTA */}
+            <Card className="bg-gradient-to-r from-green-500 to-green-600 text-white shadow-xl">
+              <CardContent className="p-6">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h4 className="text-xl font-bold mb-2">¿Necesitas ayuda inmediata?</h4>
+                    <p className="text-green-100">Contáctanos por WhatsApp para una respuesta rápida</p>
+                  </div>
+                  <Button 
+                    onClick={handleWhatsApp}
+                    className="bg-white text-green-600 hover:bg-green-50 font-semibold"
+                    size="lg"
+                  >
+                    <MessageSquare className="mr-2 h-5 w-5" />
+                    WhatsApp
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Map */}
+          <div className="space-y-6">
+            <h3 className="text-2xl font-bold text-church-blue-dark mb-6">
+              Nuestra Ubicación
+            </h3>
+            
+            <Card className="bg-white shadow-xl">
+              <CardContent className="p-0">
+                <div className="w-full h-96 rounded-lg overflow-hidden">
+                  <iframe
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2903.8899999999994!2d-2.6723999999999997!3d42.8505555555556!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd4fc2b8b5b8b5b8b%3A0x5b8b5b8b5b8b5b8b!2sCalle%20Arana%2C%2028%2C%2001002%20Vitoria-Gasteiz%2C%20%C3%81lava%2C%20Spain!5e0!3m2!1sen!2ses!4v1234567890123"
+                    width="100%"
+                    height="100%"
+                    style={{ border: 0 }}
+                    allowFullScreen
+                    loading="lazy"
+                    referrerPolicy="no-referrer-when-downgrade"
+                    title="Ubicación Centro Cristiano Casa de Provisión"
+                  ></iframe>
+                </div>
               </CardContent>
             </Card>
 
-            {/* Map Placeholder */}
-            <Card className="bg-white shadow-xl">
-              <CardContent className="p-0">
-                <div className="h-64 bg-gray-200 rounded-lg flex items-center justify-center">
-                  <div className="text-center">
-                    <MapPin className="h-12 w-12 text-church-gold mx-auto mb-4" />
-                    <p className="text-gray-600">Mapa de Ubicación</p>
-                    <p className="text-sm text-gray-500">Google Maps se integrará aquí</p>
-                  </div>
-                </div>
+            <Card className="bg-church-cream border-church-gold border-2">
+              <CardContent className="p-6 text-center">
+                <h4 className="text-lg font-bold text-church-blue-dark mb-3">
+                  ¡Te esperamos!
+                </h4>
+                <p className="text-gray-700 mb-4">
+                  Ven y forma parte de nuestra familia en Cristo. Todos son bienvenidos.
+                </p>
+                <Button 
+                  className="bg-church-gold hover:bg-church-gold-dark text-white font-semibold"
+                  onClick={handleWhatsApp}
+                >
+                  <Phone className="mr-2 h-4 w-4" />
+                  Contactar Ahora
+                </Button>
               </CardContent>
             </Card>
           </div>

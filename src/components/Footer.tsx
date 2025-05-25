@@ -24,13 +24,28 @@ const Footer = () => {
               fortaleciendo la fe y construyendo un futuro lleno de esperanza.
             </p>
             <div className="flex space-x-4">
-              <a href="#" className="bg-church-blue hover:bg-church-gold p-3 rounded-full transition-colors duration-200">
+              <a 
+                href="https://www.facebook.com/profile.php?id=61567892185318" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="bg-church-blue hover:bg-church-gold p-3 rounded-full transition-colors duration-200"
+              >
                 <Facebook className="h-5 w-5" />
               </a>
-              <a href="#" className="bg-church-blue hover:bg-church-gold p-3 rounded-full transition-colors duration-200">
+              <a 
+                href="https://www.instagram.com/cc.casadeprovision/" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="bg-church-blue hover:bg-church-gold p-3 rounded-full transition-colors duration-200"
+              >
                 <Instagram className="h-5 w-5" />
               </a>
-              <a href="#" className="bg-church-blue hover:bg-church-gold p-3 rounded-full transition-colors duration-200">
+              <a 
+                href="https://www.youtube.com/@cc.casadeprovision" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="bg-church-blue hover:bg-church-gold p-3 rounded-full transition-colors duration-200"
+              >
                 <Youtube className="h-5 w-5" />
               </a>
             </div>
@@ -46,6 +61,7 @@ const Footer = () => {
               <li><a href="#calendario" className="text-church-blue-light hover:text-white transition-colors">Calendario</a></li>
               <li><a href="#transmisiones" className="text-church-blue-light hover:text-white transition-colors">Transmisiones</a></li>
               <li><a href="#donaciones" className="text-church-blue-light hover:text-white transition-colors">Donaciones</a></li>
+              <li><a href="#misiones" className="text-church-blue-light hover:text-white transition-colors">Misiones</a></li>
             </ul>
           </div>
 
@@ -56,18 +72,18 @@ const Footer = () => {
               <div className="flex items-start gap-3">
                 <MapPin className="h-5 w-5 text-church-gold mt-1 flex-shrink-0" />
                 <div className="text-church-blue-light">
-                  <p>Av. Principal 123</p>
-                  <p>Barrio Centro</p>
-                  <p>Ciudad, Estado 12345</p>
+                  <p>Calle Arana, 28</p>
+                  <p>Vitoria-Gasteiz, Álava</p>
+                  <p>España, 01002</p>
                 </div>
               </div>
               <div className="flex items-center gap-3">
                 <Phone className="h-5 w-5 text-church-gold" />
-                <span className="text-church-blue-light">(11) 9876-5432</span>
+                <span className="text-church-blue-light">+34 627 10 87 30</span>
               </div>
               <div className="flex items-center gap-3">
                 <Mail className="h-5 w-5 text-church-gold" />
-                <span className="text-church-blue-light">contacto@casadeprovision.org</span>
+                <span className="text-church-blue-light">casadeprovision@gmail.com</span>
               </div>
             </div>
           </div>

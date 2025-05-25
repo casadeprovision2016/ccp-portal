@@ -7,7 +7,7 @@ const LiveStreamSection = () => {
   const recordings = [
     {
       id: 1,
-      title: "La Fe que Transforma - Pastor Juan Carlos",
+      title: "Culto Dominical - Pastor Ricardo",
       date: "15 de Enero, 2024",
       duration: "45 min",
       thumbnail: "https://images.unsplash.com/photo-1438232992991-995b7058bbb3?w=400&h=225&fit=crop",
@@ -15,7 +15,7 @@ const LiveStreamSection = () => {
     },
     {
       id: 2,
-      title: "Estudio: El Amor de Dios - Pastora María",
+      title: "Estudio Bíblico - Pastora Luzinete",
       date: "12 de Enero, 2024",
       duration: "35 min",
       thumbnail: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=225&fit=crop",
@@ -23,11 +23,11 @@ const LiveStreamSection = () => {
     },
     {
       id: 3,
-      title: "Juventud en Acción - Pastor Miguel",
+      title: "Mensaje Especial - Anciano Alejandro",
       date: "10 de Enero, 2024",
       duration: "40 min",
       thumbnail: "https://images.unsplash.com/photo-1511632765486-a01980e01a18?w=400&h=225&fit=crop",
-      type: "Jóvenes"
+      type: "Mensaje"
     }
   ];
 
@@ -63,6 +63,7 @@ const LiveStreamSection = () => {
                     <Button 
                       size="lg" 
                       className="bg-church-gold hover:bg-church-gold-dark text-white font-semibold"
+                      onClick={() => window.open('https://www.youtube.com/channel/UCiZGj9wHkU6X4XBjZZ5VoFg', '_blank')}
                     >
                       <Play className="mr-2 h-5 w-5" />
                       Ver Transmisión
@@ -71,6 +72,7 @@ const LiveStreamSection = () => {
                       variant="outline" 
                       size="lg"
                       className="border-white text-white hover:bg-white hover:text-church-blue"
+                      onClick={() => window.open('https://www.youtube.com/@cc.casadeprovision', '_blank')}
                     >
                       <Youtube className="mr-2 h-5 w-5" />
                       Canal de YouTube
@@ -107,6 +109,7 @@ const LiveStreamSection = () => {
                     <Button 
                       size="lg"
                       className="bg-church-gold hover:bg-church-gold-dark text-white"
+                      onClick={() => window.open('https://www.youtube.com/@cc.casadeprovision/streams', '_blank')}
                     >
                       <Play className="mr-2 h-5 w-5" />
                       Reproducir
@@ -127,6 +130,7 @@ const LiveStreamSection = () => {
                   <Button 
                     variant="outline" 
                     className="w-full border-church-blue text-church-blue hover:bg-church-blue hover:text-white"
+                    onClick={() => window.open('https://www.youtube.com/@cc.casadeprovision/streams', '_blank')}
                   >
                     <ExternalLink className="mr-2 h-4 w-4" />
                     Ver en YouTube
@@ -142,6 +146,7 @@ const LiveStreamSection = () => {
             variant="outline" 
             size="lg"
             className="border-church-blue text-church-blue hover:bg-church-blue hover:text-white font-semibold px-8"
+            onClick={() => window.open('https://www.youtube.com/@cc.casadeprovision/streams', '_blank')}
           >
             Ver Más Grabaciones
           </Button>

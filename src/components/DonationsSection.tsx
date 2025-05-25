@@ -1,9 +1,18 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Heart, CreditCard, Smartphone, Shield, Gift } from 'lucide-react';
+import { Heart, CreditCard, Building, Shield, Gift, Copy } from 'lucide-react';
+import { useState } from 'react';
 
 const DonationsSection = () => {
+  const [copied, setCopied] = useState('');
+
+  const copyToClipboard = (text: string, type: string) => {
+    navigator.clipboard.writeText(text);
+    setCopied(type);
+    setTimeout(() => setCopied(''), 2000);
+  };
+
   return (
     <section id="donaciones" className="py-20 bg-church-warm-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -57,65 +66,86 @@ const DonationsSection = () => {
         </div>
 
         {/* Donation Methods */}
-        <div className="grid md:grid-cols-2 gap-8">
+        <div className="grid md:grid-cols-2 gap-8 mb-12">
           <Card className="bg-white shadow-xl border-t-4 border-church-gold">
             <CardHeader className="text-center">
-              <Smartphone className="h-12 w-12 text-church-gold mx-auto mb-4" />
-              <CardTitle className="text-2xl text-church-blue-dark">PIX</CardTitle>
+              <Building className="h-12 w-12 text-church-gold mx-auto mb-4" />
+              <CardTitle className="text-2xl text-church-blue-dark">Transferencia Bancaria</CardTitle>
             </CardHeader>
             <CardContent className="space-y-6">
-              <div className="text-center">
-                <p className="text-gray-600 mb-4">Dona de forma rápida y segura usando PIX</p>
+              <div className="space-y-4">
                 <div className="bg-gray-100 p-4 rounded-lg">
-                  <p className="font-mono text-lg text-church-blue-dark">
-                    igreja@casadeprovision.org
+                  <div className="flex justify-between items-center mb-2">
+                    <p className="font-semibold text-gray-700">IBAN:</p>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => copyToClipboard('ES1021001419020200597614', 'iban')}
+                      className="p-1"
+                    >
+                      <Copy className="h-4 w-4" />
+                    </Button>
+                  </div>
+                  <p className="font-mono text-lg text-church-blue-dark break-all">
+                    ES1021001419020200597614
                   </p>
+                  {copied === 'iban' && <p className="text-green-600 text-sm mt-1">¡Copiado!</p>}
                 </div>
-                <p className="text-sm text-gray-500 mt-2">
-                  Centro Cristiano Casa de Provisión
-                </p>
+                
+                <div className="bg-gray-100 p-4 rounded-lg">
+                  <div className="flex justify-between items-center mb-2">
+                    <p className="font-semibold text-gray-700">BIC/SWIFT:</p>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => copyToClipboard('CAIXESBBXXX', 'bic')}
+                      className="p-1"
+                    >
+                      <Copy className="h-4 w-4" />
+                    </Button>
+                  </div>
+                  <p className="font-mono text-lg text-church-blue-dark">
+                    CAIXESBBXXX
+                  </p>
+                  {copied === 'bic' && <p className="text-green-600 text-sm mt-1">¡Copiado!</p>}
+                </div>
+
+                <div className="text-center">
+                  <p className="font-semibold text-gray-700">Titular:</p>
+                  <p className="text-church-blue-dark">Centro Cristiano Casa de Provisión</p>
+                </div>
               </div>
-              <Button 
-                className="w-full bg-church-gold hover:bg-church-gold-dark text-white font-semibold text-lg py-3"
-                size="lg"
-              >
-                <Smartphone className="mr-2 h-5 w-5" />
-                Donar via PIX
-              </Button>
             </CardContent>
           </Card>
 
           <Card className="bg-white shadow-xl border-t-4 border-church-blue">
             <CardHeader className="text-center">
               <CreditCard className="h-12 w-12 text-church-blue mx-auto mb-4" />
-              <CardTitle className="text-2xl text-church-blue-dark">PagSeguro</CardTitle>
+              <CardTitle className="text-2xl text-church-blue-dark">Bizum</CardTitle>
             </CardHeader>
             <CardContent className="space-y-6">
               <div className="text-center">
-                <p className="text-gray-600 mb-4">Dona usando tarjeta de crédito o débito</p>
-                <div className="space-y-2">
-                  <div className="flex items-center justify-center gap-2">
-                    <Shield className="h-4 w-4 text-green-600" />
-                    <span className="text-sm text-gray-600">Transacción segura</span>
-                  </div>
-                  <div className="flex items-center justify-center gap-2">
-                    <CreditCard className="h-4 w-4 text-green-600" />
-                    <span className="text-sm text-gray-600">Todos los métodos de pago</span>
-                  </div>
+                <p className="text-gray-600 mb-4">Método de pago rápido y seguro</p>
+                <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+                  <p className="text-yellow-800 font-semibold">En construcción</p>
+                  <p className="text-yellow-600 text-sm mt-1">Pronto disponible</p>
                 </div>
               </div>
-              <Button 
-                className="w-full bg-church-blue hover:bg-church-blue-dark text-white font-semibold text-lg py-3"
-                size="lg"
-              >
-                <CreditCard className="mr-2 h-5 w-5" />
-                Donar via PagSeguro
-              </Button>
+              <div className="space-y-2">
+                <div className="flex items-center justify-center gap-2">
+                  <Shield className="h-4 w-4 text-green-600" />
+                  <span className="text-sm text-gray-600">Transacción segura</span>
+                </div>
+                <div className="flex items-center justify-center gap-2">
+                  <CreditCard className="h-4 w-4 text-green-600" />
+                  <span className="text-sm text-gray-600">Método instantáneo</span>
+                </div>
+              </div>
             </CardContent>
           </Card>
         </div>
 
-        <div className="mt-12 text-center">
+        <div className="text-center">
           <Card className="bg-church-cream border-church-gold border-2 inline-block">
             <CardContent className="p-6">
               <p className="text-church-blue-dark font-semibold text-lg">

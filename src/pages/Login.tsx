@@ -31,7 +31,7 @@ const Login = () => {
       if (success) {
         navigate('/panel');
       } else {
-        setError('Email o contraseña incorrectos');
+        setError('Usuario o contraseña incorrectos');
       }
     } catch (err) {
       setError('Error al iniciar sesión');
@@ -60,11 +60,11 @@ const Login = () => {
           <CardContent className="space-y-6">
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="email">Email</Label>
+                <Label htmlFor="email">Usuario</Label>
                 <Input
                   id="email"
-                  type="email"
-                  placeholder="admin@casadeprovision.org"
+                  type="text"
+                  placeholder="pastor o admin"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
@@ -124,9 +124,9 @@ const Login = () => {
             </form>
 
             <div className="text-center text-sm text-gray-600">
-              <p className="mb-2">Usuarios de prueba:</p>
-              <p><strong>Admin:</strong> admin@casadeprovision.org / admin123</p>
-              <p><strong>Líder:</strong> lider@casadeprovision.org / lider123</p>
+              <p className="mb-2">Usuarios disponibles:</p>
+              <p><strong>Pastor:</strong> pastor</p>
+              <p><strong>Admin:</strong> admin</p>
             </div>
           </CardContent>
         </Card>

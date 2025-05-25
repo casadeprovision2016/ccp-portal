@@ -7,6 +7,7 @@ import CalendarSection from '@/components/CalendarSection';
 import LiveStreamSection from '@/components/LiveStreamSection';
 import DonationsSection from '@/components/DonationsSection';
 import ContactSection from '@/components/ContactSection';
+import MisionesSection from '@/components/MisionesSection';
 import Footer from '@/components/Footer';
 
 const Index = () => {
@@ -20,6 +21,7 @@ const Index = () => {
       <LiveStreamSection />
       <DonationsSection />
       <ContactSection />
+      <MisionesSection />
       <Footer />
     </div>
   );

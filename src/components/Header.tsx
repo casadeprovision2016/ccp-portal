@@ -1,7 +1,7 @@
 
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { Menu, X, Heart, Calendar, Users, Phone, Play, DollarSign, Settings } from 'lucide-react';
+import { Menu, X, Heart, Calendar, Users, Phone, Play, DollarSign, Settings, Globe } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const Header = () => {
@@ -15,6 +15,7 @@ const Header = () => {
     { name: 'Transmisiones', href: '#transmisiones', icon: Play },
     { name: 'Donaciones', href: '#donaciones', icon: DollarSign },
     { name: 'Contacto', href: '#contacto', icon: Phone },
+    { name: 'Misiones', href: '#misiones', icon: Globe },
   ];
 
   return (

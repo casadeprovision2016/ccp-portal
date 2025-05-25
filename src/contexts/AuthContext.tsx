@@ -28,10 +28,22 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   }, []);
 
   const login = async (email: string, password: string): Promise<boolean> => {
-    // Simulamos usuarios predefinidos
+    // Usuarios hardcoded según especificaciones
     const users = [
-      { id: '1', email: 'admin@casadeprovision.org', password: 'admin123', name: 'Administrador', role: 'admin' as const },
-      { id: '2', email: 'lider@casadeprovision.org', password: 'lider123', name: 'Líder', role: 'leader' as const }
+      { 
+        id: '1', 
+        email: 'pastor', 
+        password: 'P@storCCP_2025-!long-secure-pass', 
+        name: 'Pastor', 
+        role: 'admin' as const 
+      },
+      { 
+        id: '2', 
+        email: 'admin', 
+        password: 'Adm1nCasaDeProvis10n#secure-long-pass', 
+        name: 'Administrador', 
+        role: 'leader' as const 
+      }
     ];
 
     const foundUser = users.find(u => u.email === email && u.password === password);

@@ -6,7 +6,7 @@ const AboutSection = () => {
   const values = [
     {
       icon: Heart,
-      title: "Nuestra Historia",
+      title: "Historia",
       description: "Fundada con el propósito de ser un refugio de esperanza y amor, donde cada persona encuentra su lugar en la familia de Dios."
     },
     {
@@ -28,22 +28,22 @@ const AboutSection = () => {
 
   const pastors = [
     {
-      name: "Pastor Juan Carlos",
+      name: "Pastor Ricardo",
       position: "Pastor Principal",
-      image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop&crop=face",
-      description: "Con más de 15 años en el ministerio, guía nuestra congregación con sabiduría y amor."
+      image: "/lovable-uploads/ce019aa7-21bb-4943-813c-1760a0e9e02a.png",
+      description: "Con años de experiencia en el ministerio, guía nuestra congregación con sabiduría y amor."
     },
     {
-      name: "Pastora María Elena",
+      name: "Pastora Luzinete",
       position: "Pastora Asociada",
-      image: "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=400&h=400&fit=crop&crop=face",
+      image: "/lovable-uploads/2ae0cdd4-04a9-42d4-8d72-505219ba87d1.png",
       description: "Lidera el ministerio de mujeres y el trabajo con familias en nuestra comunidad."
     },
     {
-      name: "Pastor Miguel",
-      position: "Pastor de Jóvenes",
+      name: "Anciano Alejandro",
+      position: "Líder de Ujieres",
       image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop&crop=face",
-      description: "Dedica su ministerio a impactar la vida de los jóvenes con el evangelio."
+      description: "Dedica su servicio a coordinar el ministerio de ujieres y la hospitalidad en la iglesia."
     }
   ];
 
