@@ -4,10 +4,15 @@ import { Navigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useAuth } from '@/contexts/AuthContext';
-import { LogOut, Calendar, Users, Settings, Home } from 'lucide-react';
+import { LogOut, Calendar, Users, Settings, Home, Video, DollarSign, UserPlus, User } from 'lucide-react';
 import EventsManager from '@/components/panel/EventsManager';
 import MembersManager from '@/components/panel/MembersManager';
 import MinistriesManager from '@/components/panel/MinistriesManager';
+import StreamsManager from '@/components/panel/StreamsManager';
+import DonationsManager from '@/components/panel/DonationsManager';
+import VisitorsManager from '@/components/panel/VisitorsManager';
+import PastoralVisitsManager from '@/components/panel/PastoralVisitsManager';
+import BirthdaysList from '@/components/panel/BirthdaysList';
 
 const Panel = () => {
   const { user, logout, isAuthenticated } = useAuth();
@@ -20,7 +25,11 @@ const Panel = () => {
   const sections = [
     { id: 'dashboard', name: 'Dashboard', icon: Home },
     { id: 'events', name: 'Eventos', icon: Calendar },
+    { id: 'streams', name: 'Transmisiones', icon: Video },
+    { id: 'donations', name: 'Donaciones', icon: DollarSign },
     { id: 'members', name: 'Miembros', icon: Users },
+    { id: 'visitors', name: 'Visitantes', icon: UserPlus },
+    { id: 'pastoral-visits', name: 'Visitas Pastorales', icon: User },
     { id: 'ministries', name: 'Ministerios', icon: Settings },
   ];
 
@@ -28,40 +37,51 @@ const Panel = () => {
     switch (activeSection) {
       case 'events':
         return <EventsManager />;
+      case 'streams':
+        return <StreamsManager />;
+      case 'donations':
+        return <DonationsManager />;
       case 'members':
         return <MembersManager />;
+      case 'visitors':
+        return <VisitorsManager />;
+      case 'pastoral-visits':
+        return <PastoralVisitsManager />;
       case 'ministries':
         return <MinistriesManager />;
       default:
         return (
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-church-blue-dark">Eventos</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-2xl font-bold text-church-gold">12</p>
-                <p className="text-gray-600">Eventos este mes</p>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-church-blue-dark">Miembros</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-2xl font-bold text-church-gold">158</p>
-                <p className="text-gray-600">Miembros registrados</p>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-church-blue-dark">Ministerios</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-2xl font-bold text-church-gold">8</p>
-                <p className="text-gray-600">Ministerios activos</p>
-              </CardContent>
-            </Card>
+          <div className="space-y-6">
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="text-church-blue-dark">Eventos</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-2xl font-bold text-church-gold">12</p>
+                  <p className="text-gray-600">Eventos este mes</p>
+                </CardContent>
+              </Card>
+              <Card>
+                <CardHeader>
+                  <CardTitle className="text-church-blue-dark">Miembros</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-2xl font-bold text-church-gold">158</p>
+                  <p className="text-gray-600">Miembros registrados</p>
+                </CardContent>
+              </Card>
+              <Card>
+                <CardHeader>
+                  <CardTitle className="text-church-blue-dark">Visitantes</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-2xl font-bold text-church-gold">24</p>
+                  <p className="text-gray-600">Visitantes este mes</p>
+                </CardContent>
+              </Card>
+            </div>
+            <BirthdaysList />
           </div>
         );
     }
