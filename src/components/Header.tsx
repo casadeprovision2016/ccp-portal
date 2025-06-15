@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Menu, X, Heart, Calendar, Users, Phone, Play, DollarSign, Settings, Globe } from 'lucide-react';
@@ -10,7 +9,6 @@ const Header = () => {
   const navigation = [
     { name: 'Inicio', href: '#inicio', icon: Heart },
     { name: 'Quiénes Somos', href: '#quienes-somos', icon: Users },
-    { name: 'Eventos', href: '#eventos', icon: Calendar },
     { name: 'Calendario', href: '#calendario', icon: Calendar },
     { name: 'Transmisiones', href: '#transmisiones', icon: Play },
     { name: 'Donaciones', href: '#donaciones', icon: DollarSign },
