@@ -2,11 +2,10 @@
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Calendar } from '@/components/ui/calendar';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Badge } from '@/components/ui/badge';
 import { Calendar as CalendarIcon, Clock, MapPin, ChevronLeft, ChevronRight, Star, Phone, Mail, Users } from 'lucide-react';
-import { format, isSameDay, startOfMonth, endOfMonth, eachDayOfInterval } from 'date-fns';
+import { format, isSameDay, startOfMonth, endOfMonth, eachDayOfInterval, startOfWeek, endOfWeek, addDays, isSameMonth } from 'date-fns';
 import { es } from 'date-fns/locale';
 
 interface Event {
@@ -36,7 +35,6 @@ interface WeeklyService {
 
 const CalendarSection = () => {
   const [events, setEvents] = useState<Event[]>([]);
-  const [selectedDate, setSelectedDate] = useState<Date>(new Date());
   const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
   const [showEventDialog, setShowEventDialog] = useState(false);
   const [currentMonth, setCurrentMonth] = useState(new Date());
@@ -114,9 +112,6 @@ const CalendarSection = () => {
     return events.filter(event => isSameDay(new Date(event.date), date));
   };
 
-  // Fechas que tienen eventos para mostrar en el calendario
-  const eventDates = events.map(event => new Date(event.date));
-
   const navigateMonth = (direction: 'prev' | 'next') => {
     const newMonth = new Date(currentMonth);
     if (direction === 'prev') {
@@ -132,21 +127,23 @@ const CalendarSection = () => {
     setShowEventDialog(true);
   };
 
-  const handleDateSelect = (date: Date | undefined) => {
-    if (date) {
-      setSelectedDate(date);
-      const dayEvents = getEventsForDate(date);
-      if (dayEvents.length > 0) {
-        setSelectedEvent(dayEvents[0]);
-        setShowEventDialog(true);
-      }
-    }
-  };
+  // Generate calendar grid
+  const monthStart = startOfMonth(currentMonth);
+  const monthEnd = endOfMonth(currentMonth);
+  const calendarStart = startOfWeek(monthStart, { weekStartsOn: 1 });
+  const calendarEnd = endOfWeek(monthEnd, { weekStartsOn: 1 });
+  
+  const calendarDays = eachDayOfInterval({
+    start: calendarStart,
+    end: calendarEnd
+  });
+
+  const weekDays = ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'];
 
   return (
-    <section id="calendario" className="py-12 bg-gray-50">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-10">
+    <section id="calendario" className="py-8 bg-gray-50">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center mb-8">
           <h2 className="text-3xl font-bold text-church-blue-dark mb-3">
             Calendario de Actividades
           </h2>
@@ -190,8 +187,8 @@ const CalendarSection = () => {
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {highlightedEvents.slice(0, 3).map((event) => (
-                <Card key={event.id} className="bg-gradient-to-br from-church-gold/10 to-church-blue/10 hover:shadow-xl transition-all cursor-pointer border-2 border-church-gold/20">
-                  <CardContent className="p-4" onClick={() => handleEventClick(event)}>
+                <Card key={event.id} className="bg-gradient-to-br from-church-gold/10 to-church-blue/10 hover:shadow-xl transition-all cursor-pointer border-2 border-church-gold/20" onClick={() => handleEventClick(event)}>
+                  <CardContent className="p-4">
                     <div className="flex items-start justify-between mb-2">
                       <Badge className={`${getEventTypeColor(event.type)} text-xs`}>
                         {getEventTypeLabel(event.type)}
@@ -219,20 +216,21 @@ const CalendarSection = () => {
           </div>
         )}
 
-        <div className="grid lg:grid-cols-2 gap-8">
-          {/* Calendar View */}
-          <div className="space-y-4">
-            <Card className="bg-white">
-              <CardHeader className="pb-3">
+        <div className="grid lg:grid-cols-3 gap-8">
+          {/* Calendar View - Google Calendar Style */}
+          <div className="lg:col-span-2 space-y-6">
+            <Card className="bg-white shadow-lg">
+              <CardHeader className="pb-4">
                 <div className="flex items-center justify-between">
-                  <CardTitle className="text-church-blue-dark text-lg">
+                  <CardTitle className="text-church-blue-dark text-2xl">
                     {format(currentMonth, 'MMMM yyyy', { locale: es })}
                   </CardTitle>
-                  <div className="flex gap-1">
+                  <div className="flex gap-2">
                     <Button
                       variant="outline"
                       size="sm"
                       onClick={() => navigateMonth('prev')}
+                      className="hover:bg-church-gold hover:text-white"
                     >
                       <ChevronLeft className="h-4 w-4" />
                     </Button>
@@ -240,52 +238,96 @@ const CalendarSection = () => {
                       variant="outline"
                       size="sm"
                       onClick={() => navigateMonth('next')}
+                      className="hover:bg-church-gold hover:text-white"
                     >
                       <ChevronRight className="h-4 w-4" />
                     </Button>
                   </div>
                 </div>
               </CardHeader>
-              <CardContent className="pt-0">
-                <Calendar
-                  mode="single"
-                  selected={selectedDate}
-                  onSelect={handleDateSelect}
-                  month={currentMonth}
-                  onMonthChange={setCurrentMonth}
-                  locale={es}
-                  modifiers={{
-                    hasEvent: eventDates,
-                  }}
-                  modifiersStyles={{
-                    hasEvent: {
-                      backgroundColor: '#f59e0b',
-                      color: 'white',
-                      fontWeight: 'bold'
-                    }
-                  }}
-                  className="rounded-md border-0 w-full"
-                />
+              <CardContent className="p-0">
+                {/* Calendar Grid */}
+                <div className="border-t border-gray-200">
+                  {/* Header with weekdays */}
+                  <div className="grid grid-cols-7 border-b border-gray-200">
+                    {weekDays.map((day) => (
+                      <div key={day} className="p-4 text-center font-semibold text-church-blue-dark bg-gray-50">
+                        {day}
+                      </div>
+                    ))}
+                  </div>
+                  
+                  {/* Calendar body */}
+                  <div className="grid grid-cols-7">
+                    {calendarDays.map((day, dayIndex) => {
+                      const dayEvents = getEventsForDate(day);
+                      const isCurrentMonth = isSameMonth(day, currentMonth);
+                      const isToday = isSameDay(day, new Date());
+                      
+                      return (
+                        <div
+                          key={dayIndex}
+                          className={`
+                            min-h-[120px] p-2 border-b border-r border-gray-200 
+                            ${!isCurrentMonth ? 'bg-gray-50/50 text-gray-400' : 'bg-white'}
+                            ${isToday ? 'bg-church-gold/10' : ''}
+                          `}
+                        >
+                          <div className={`
+                            text-sm font-medium mb-2 
+                            ${isToday ? 'bg-church-gold text-white rounded-full w-6 h-6 flex items-center justify-center' : ''}
+                          `}>
+                            {format(day, 'd')}
+                          </div>
+                          
+                          {/* Event bands */}
+                          <div className="space-y-1">
+                            {dayEvents.slice(0, 3).map((event) => (
+                              <div
+                                key={event.id}
+                                onClick={() => handleEventClick(event)}
+                                className={`
+                                  text-xs p-1 rounded cursor-pointer hover:opacity-80 transition-opacity
+                                  ${getEventTypeColor(event.type)}
+                                  ${event.isHighlighted ? 'ring-2 ring-church-gold ring-opacity-50' : ''}
+                                `}
+                              >
+                                <div className="font-medium truncate">
+                                  {event.time} - {event.title}
+                                </div>
+                              </div>
+                            ))}
+                            {dayEvents.length > 3 && (
+                              <div className="text-xs text-gray-500 font-medium">
+                                +{dayEvents.length - 3} más
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
               </CardContent>
             </Card>
           </div>
 
-          {/* Events List */}
-          <div className="space-y-4">
+          {/* Events List Sidebar */}
+          <div className="space-y-6">
             <h3 className="text-xl font-bold text-church-blue-dark">
               Próximos Eventos
             </h3>
             
             {upcomingEvents.length === 0 ? (
               <Card className="bg-white">
-                <CardContent className="text-center py-6">
+                <CardContent className="text-center py-8">
                   <CalendarIcon className="h-12 w-12 mx-auto mb-3 text-gray-400" />
                   <p className="text-gray-600">No hay eventos programados</p>
                 </CardContent>
               </Card>
             ) : (
               <div className="space-y-3 max-h-96 overflow-y-auto">
-                {upcomingEvents.slice(0, 6).map((event) => (
+                {upcomingEvents.slice(0, 8).map((event) => (
                   <Card key={event.id} className="bg-white hover:shadow-lg transition-shadow cursor-pointer" onClick={() => handleEventClick(event)}>
                     <CardContent className="p-4">
                       <div className="flex items-start gap-3">
