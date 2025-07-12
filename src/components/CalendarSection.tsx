@@ -144,37 +144,37 @@ const CalendarSection = () => {
   };
 
   return (
-    <section id="calendario" className="py-20 bg-gray-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl font-bold text-church-blue-dark mb-4">
+    <section id="calendario" className="py-12 bg-gray-50">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center mb-10">
+          <h2 className="text-3xl font-bold text-church-blue-dark mb-3">
             Calendario de Actividades
           </h2>
-          <p className="text-xl text-gray-600">
+          <p className="text-lg text-gray-600">
             Mantente al día con nuestras actividades y eventos programados
           </p>
         </div>
 
         {/* Servicios Semanales Fijos */}
-        <div className="mb-12">
-          <h3 className="text-2xl font-bold text-church-blue-dark mb-6 text-center">
+        <div className="mb-8">
+          <h3 className="text-xl font-bold text-church-blue-dark mb-4 text-center">
             Horarios de Servicios Regulares
           </h3>
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
             {weeklyServices.map((service, index) => (
               <Card key={index} className="bg-white hover:shadow-lg transition-shadow">
                 <CardContent className="p-4">
-                  <div className={`inline-block px-3 py-1 rounded-full text-sm font-medium mb-3 ${getEventTypeColor(service.type)}`}>
+                  <div className={`inline-block px-2 py-1 rounded-full text-xs font-medium mb-2 ${getEventTypeColor(service.type)}`}>
                     {service.day}
                   </div>
-                  <h4 className="font-semibold text-church-blue-dark mb-2">
+                  <h4 className="font-semibold text-church-blue-dark mb-2 text-sm">
                     {service.title}
                   </h4>
                   <div className="flex items-center gap-2 text-church-gold mb-2">
-                    <Clock className="h-4 w-4" />
-                    <span className="font-medium">{service.time}</span>
+                    <Clock className="h-3 w-3" />
+                    <span className="font-medium text-sm">{service.time}</span>
                   </div>
-                  <p className="text-sm text-gray-600">{service.description}</p>
+                  <p className="text-xs text-gray-600">{service.description}</p>
                 </CardContent>
               </Card>
             ))}
@@ -183,32 +183,32 @@ const CalendarSection = () => {
 
         {/* Eventos Destacados */}
         {highlightedEvents.length > 0 && (
-          <div className="mb-12">
-            <h3 className="text-2xl font-bold text-church-blue-dark mb-6 flex items-center gap-2">
-              <Star className="h-6 w-6 text-church-gold" />
+          <div className="mb-8">
+            <h3 className="text-xl font-bold text-church-blue-dark mb-4 flex items-center gap-2">
+              <Star className="h-5 w-5 text-church-gold" />
               Eventos Destacados
             </h3>
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {highlightedEvents.slice(0, 3).map((event) => (
                 <Card key={event.id} className="bg-gradient-to-br from-church-gold/10 to-church-blue/10 hover:shadow-xl transition-all cursor-pointer border-2 border-church-gold/20">
-                  <CardContent className="p-6" onClick={() => handleEventClick(event)}>
-                    <div className="flex items-start justify-between mb-3">
-                      <Badge className={`${getEventTypeColor(event.type)}`}>
+                  <CardContent className="p-4" onClick={() => handleEventClick(event)}>
+                    <div className="flex items-start justify-between mb-2">
+                      <Badge className={`${getEventTypeColor(event.type)} text-xs`}>
                         {getEventTypeLabel(event.type)}
                       </Badge>
-                      <Star className="h-5 w-5 text-church-gold fill-current" />
+                      <Star className="h-4 w-4 text-church-gold fill-current" />
                     </div>
-                    <h4 className="text-lg font-semibold text-church-blue-dark mb-2">
+                    <h4 className="text-sm font-semibold text-church-blue-dark mb-2">
                       {event.title}
                     </h4>
-                    <p className="text-gray-600 mb-3 text-sm">{event.description}</p>
-                    <div className="space-y-2 text-sm">
+                    <p className="text-gray-600 mb-2 text-xs">{event.description}</p>
+                    <div className="space-y-1 text-xs">
                       <div className="flex items-center gap-2 text-church-gold">
-                        <CalendarIcon className="h-4 w-4" />
+                        <CalendarIcon className="h-3 w-3" />
                         <span>{format(new Date(event.date), 'EEEE, d MMMM yyyy', { locale: es })}</span>
                       </div>
                       <div className="flex items-center gap-2 text-church-gold">
-                        <Clock className="h-4 w-4" />
+                        <Clock className="h-3 w-3" />
                         <span>{event.time}</span>
                       </div>
                     </div>
@@ -219,16 +219,16 @@ const CalendarSection = () => {
           </div>
         )}
 
-        <div className="grid lg:grid-cols-2 gap-12">
+        <div className="grid lg:grid-cols-2 gap-8">
           {/* Calendar View */}
-          <div className="space-y-6">
+          <div className="space-y-4">
             <Card className="bg-white">
-              <CardHeader>
+              <CardHeader className="pb-3">
                 <div className="flex items-center justify-between">
-                  <CardTitle className="text-church-blue-dark">
+                  <CardTitle className="text-church-blue-dark text-lg">
                     {format(currentMonth, 'MMMM yyyy', { locale: es })}
                   </CardTitle>
-                  <div className="flex gap-2">
+                  <div className="flex gap-1">
                     <Button
                       variant="outline"
                       size="sm"
@@ -246,7 +246,7 @@ const CalendarSection = () => {
                   </div>
                 </div>
               </CardHeader>
-              <CardContent>
+              <CardContent className="pt-0">
                 <Calendar
                   mode="single"
                   selected={selectedDate}
@@ -264,55 +264,55 @@ const CalendarSection = () => {
                       fontWeight: 'bold'
                     }
                   }}
-                  className="rounded-md border-0"
+                  className="rounded-md border-0 w-full"
                 />
               </CardContent>
             </Card>
           </div>
 
           {/* Events List */}
-          <div className="space-y-6">
-            <h3 className="text-2xl font-bold text-church-blue-dark">
+          <div className="space-y-4">
+            <h3 className="text-xl font-bold text-church-blue-dark">
               Próximos Eventos
             </h3>
             
             {upcomingEvents.length === 0 ? (
               <Card className="bg-white">
-                <CardContent className="text-center py-8">
-                  <CalendarIcon className="h-16 w-16 mx-auto mb-4 text-gray-400" />
+                <CardContent className="text-center py-6">
+                  <CalendarIcon className="h-12 w-12 mx-auto mb-3 text-gray-400" />
                   <p className="text-gray-600">No hay eventos programados</p>
                 </CardContent>
               </Card>
             ) : (
-              <div className="space-y-4">
+              <div className="space-y-3 max-h-96 overflow-y-auto">
                 {upcomingEvents.slice(0, 6).map((event) => (
                   <Card key={event.id} className="bg-white hover:shadow-lg transition-shadow cursor-pointer" onClick={() => handleEventClick(event)}>
-                    <CardContent className="p-6">
-                      <div className="flex items-start gap-4">
+                    <CardContent className="p-4">
+                      <div className="flex items-start gap-3">
                         <div className="flex items-center gap-2">
-                          <Badge className={getEventTypeColor(event.type)}>
+                          <Badge className={`${getEventTypeColor(event.type)} text-xs`}>
                             {getEventTypeLabel(event.type)}
                           </Badge>
                           {event.isHighlighted && (
-                            <Star className="h-4 w-4 text-church-gold fill-current" />
+                            <Star className="h-3 w-3 text-church-gold fill-current" />
                           )}
                         </div>
                         <div className="flex-1">
-                          <h4 className="text-lg font-semibold text-church-blue-dark mb-2">
+                          <h4 className="text-sm font-semibold text-church-blue-dark mb-1">
                             {event.title}
                           </h4>
-                          <p className="text-gray-600 mb-3">{event.description}</p>
-                          <div className="space-y-2 text-sm text-gray-600">
+                          <p className="text-gray-600 mb-2 text-xs">{event.description}</p>
+                          <div className="space-y-1 text-xs text-gray-600">
                             <div className="flex items-center gap-2">
-                              <CalendarIcon className="h-4 w-4 text-church-gold" />
+                              <CalendarIcon className="h-3 w-3 text-church-gold" />
                               <span>{format(new Date(event.date), 'EEEE, d MMMM yyyy', { locale: es })}</span>
                             </div>
                             <div className="flex items-center gap-2">
-                              <Clock className="h-4 w-4 text-church-gold" />
+                              <Clock className="h-3 w-3 text-church-gold" />
                               <span>{event.time}</span>
                             </div>
                             <div className="flex items-center gap-2">
-                              <MapPin className="h-4 w-4 text-church-gold" />
+                              <MapPin className="h-3 w-3 text-church-gold" />
                               <span>{event.location}</span>
                             </div>
                           </div>
@@ -326,22 +326,22 @@ const CalendarSection = () => {
 
             {/* Información de Contacto */}
             <Card className="bg-church-blue-dark text-white">
-              <CardContent className="p-6">
-                <h4 className="text-lg font-semibold mb-4 flex items-center gap-2">
-                  <Users className="h-5 w-5 text-church-gold" />
+              <CardContent className="p-4">
+                <h4 className="text-sm font-semibold mb-3 flex items-center gap-2">
+                  <Users className="h-4 w-4 text-church-gold" />
                   Contacto para Eventos
                 </h4>
-                <div className="space-y-3 text-sm">
-                  <div className="flex items-center gap-3">
-                    <Phone className="h-4 w-4 text-church-gold" />
+                <div className="space-y-2 text-xs">
+                  <div className="flex items-center gap-2">
+                    <Phone className="h-3 w-3 text-church-gold" />
                     <span>+593 (04) 123-4567</span>
                   </div>
-                  <div className="flex items-center gap-3">
-                    <Mail className="h-4 w-4 text-church-gold" />
+                  <div className="flex items-center gap-2">
+                    <Mail className="h-3 w-3 text-church-gold" />
                     <span>eventos@casadeprovision.org</span>
                   </div>
                 </div>
-                <p className="text-church-gold/80 text-sm mt-3">
+                <p className="text-church-gold/80 text-xs mt-2">
                   ¿Tienes preguntas sobre algún evento? ¡Contáctanos!
                 </p>
               </CardContent>
