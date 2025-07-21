@@ -44,7 +44,7 @@ const HeroSection = () => {
                 <div className="flex items-center justify-between p-4 bg-church-cream rounded-lg">
                   <div>
                     <h4 className="font-semibold text-church-blue-dark">Culto Dominical</h4>
-                    <p className="text-gray-600">Domingo 9:00 AM</p>
+                    <p className="text-gray-600">Domingo 11:00 AM</p>
                   </div>
                   <Users className="h-6 w-6 text-church-gold" />
                 </div>

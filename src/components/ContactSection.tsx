@@ -24,7 +24,7 @@ const ContactSection = () => {
     {
       icon: Mail,
       title: "Email",
-      details: ["casadeprovision@gmail.com"],
+      details: ["pastor@casadeprovision.es"],
       color: "text-church-blue"
     },
     {
