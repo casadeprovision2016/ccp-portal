@@ -3,7 +3,17 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Plus, Edit, Trash2, User, Phone, Mail } from 'lucide-react';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Plus, Edit, Trash2, User, Phone, Mail, Calendar, CheckCircle2, XCircle } from 'lucide-react';
+
+interface AttendanceRecord {
+  id: string;
+  memberId: string;
+  date: string;
+  serviceType: 'domingo' | 'miercoles' | 'especial';
+  present: boolean;
+  notes?: string;
+}
 
 interface Member {
   id: string;
@@ -18,9 +28,13 @@ interface Member {
 
 const MembersManager = () => {
   const [members, setMembers] = useState<Member[]>([]);
+  const [attendance, setAttendance] = useState<AttendanceRecord[]>([]);
   const [showForm, setShowForm] = useState(false);
   const [editingMember, setEditingMember] = useState<Member | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
+  const [activeTab, setActiveTab] = useState('members');
+  const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0]);
+  const [selectedServiceType, setSelectedServiceType] = useState<'domingo' | 'miercoles' | 'especial'>('domingo');
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -33,6 +47,8 @@ const MembersManager = () => {
 
   useEffect(() => {
     const storedMembers = localStorage.getItem('members');
+    const storedAttendance = localStorage.getItem('attendance');
+    
     if (storedMembers) {
       setMembers(JSON.parse(storedMembers));
     } else {
@@ -60,6 +76,10 @@ const MembersManager = () => {
       ];
       setMembers(exampleMembers);
       localStorage.setItem('members', JSON.stringify(exampleMembers));
+    }
+
+    if (storedAttendance) {
+      setAttendance(JSON.parse(storedAttendance));
     }
   }, []);
 
@@ -120,6 +140,54 @@ const MembersManager = () => {
     }
   };
 
+  const saveAttendance = (newAttendance: AttendanceRecord[]) => {
+    setAttendance(newAttendance);
+    localStorage.setItem('attendance', JSON.stringify(newAttendance));
+  };
+
+  const handleAttendanceToggle = (memberId: string, present: boolean) => {
+    const existingRecord = attendance.find(
+      record => record.memberId === memberId && 
+                record.date === selectedDate && 
+                record.serviceType === selectedServiceType
+    );
+
+    if (existingRecord) {
+      const updatedAttendance = attendance.map(record =>
+        record.id === existingRecord.id 
+          ? { ...record, present }
+          : record
+      );
+      saveAttendance(updatedAttendance);
+    } else {
+      const newRecord: AttendanceRecord = {
+        id: Date.now().toString() + memberId,
+        memberId,
+        date: selectedDate,
+        serviceType: selectedServiceType,
+        present
+      };
+      saveAttendance([...attendance, newRecord]);
+    }
+  };
+
+  const getAttendanceForMember = (memberId: string, date: string, serviceType: string) => {
+    return attendance.find(
+      record => record.memberId === memberId && 
+                record.date === date && 
+                record.serviceType === serviceType
+    );
+  };
+
+  const getAttendanceStats = (memberId: string) => {
+    const memberAttendance = attendance.filter(record => record.memberId === memberId);
+    const totalServices = memberAttendance.length;
+    const attendedServices = memberAttendance.filter(record => record.present).length;
+    const attendanceRate = totalServices > 0 ? Math.round((attendedServices / totalServices) * 100) : 0;
+    
+    return { totalServices, attendedServices, attendanceRate };
+  };
+
   const filteredMembers = members.filter(member =>
     member.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
     member.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -147,7 +215,14 @@ const MembersManager = () => {
         </div>
       </div>
 
-      {showForm && (
+      <Tabs value={activeTab} onValueChange={setActiveTab}>
+        <TabsList className="grid w-full grid-cols-2">
+          <TabsTrigger value="members">Miembros</TabsTrigger>
+          <TabsTrigger value="attendance">Control de Asistencia</TabsTrigger>
+        </TabsList>
+
+        <TabsContent value="members" className="space-y-6">
+          {showForm && (
         <Card>
           <CardHeader>
             <CardTitle>
@@ -267,17 +342,19 @@ const MembersManager = () => {
             </form>
           </CardContent>
         </Card>
-      )}
+          )}
 
-      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {filteredMembers.map((member) => (
-          <Card key={member.id}>
-            <CardHeader className="pb-2">
-              <div className="flex justify-between items-start">
-                <div className="flex items-center gap-2">
-                  <User className="h-5 w-5 text-church-gold" />
-                  <CardTitle className="text-lg">{member.name}</CardTitle>
-                </div>
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {filteredMembers.map((member) => {
+              const stats = getAttendanceStats(member.id);
+              return (
+                <Card key={member.id}>
+                  <CardHeader className="pb-2">
+                    <div className="flex justify-between items-start">
+                      <div className="flex items-center gap-2">
+                        <User className="h-5 w-5 text-church-gold" />
+                        <CardTitle className="text-lg">{member.name}</CardTitle>
+                      </div>
                 <div className="flex gap-1">
                   <Button
                     size="sm"
@@ -294,15 +371,20 @@ const MembersManager = () => {
                   >
                     <Trash2 className="h-4 w-4" />
                   </Button>
-                </div>
-              </div>
-              <div className={`inline-block px-2 py-1 rounded text-xs text-white ${
-                member.status === 'active' ? 'bg-green-600' : 'bg-gray-600'
-              }`}>
-                {member.status === 'active' ? 'Activo' : 'Inactivo'}
-              </div>
-            </CardHeader>
-            <CardContent className="space-y-2">
+                    </div>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <div className={`inline-block px-2 py-1 rounded text-xs text-white ${
+                      member.status === 'active' ? 'bg-green-600' : 'bg-gray-600'
+                    }`}>
+                      {member.status === 'active' ? 'Activo' : 'Inactivo'}
+                    </div>
+                    <div className="text-xs text-church-gold font-medium">
+                      Asistencia: {stats.attendanceRate}%
+                    </div>
+                  </div>
+                </CardHeader>
+                <CardContent className="space-y-2">
               <div className="flex items-center gap-2 text-sm">
                 <Mail className="h-4 w-4 text-church-gold" />
                 <span className="truncate">{member.email}</span>
@@ -316,21 +398,106 @@ const MembersManager = () => {
                   <strong>Ministerio:</strong> {member.ministry}
                 </div>
               )}
-              {member.address && (
-                <div className="text-sm text-gray-600 truncate">
-                  <strong>Dirección:</strong> {member.address}
+                  {member.address && (
+                    <div className="text-sm text-gray-600 truncate">
+                      <strong>Dirección:</strong> {member.address}
+                    </div>
+                  )}
+                  <div className="text-sm text-church-blue-dark">
+                    <strong>Servicios:</strong> {stats.attendedServices}/{stats.totalServices}
+                  </div>
+                </CardContent>
+              </Card>
+              );
+            })}
+          </div>
+
+          {filteredMembers.length === 0 && (
+            <div className="text-center py-8 text-gray-500">
+              No se encontraron miembros que coincidan con la búsqueda.
+            </div>
+          )}
+        </TabsContent>
+
+        <TabsContent value="attendance" className="space-y-6">
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Calendar className="h-5 w-5 text-church-gold" />
+                Control de Asistencia
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="grid md:grid-cols-2 gap-4 mb-6">
+                <div className="space-y-2">
+                  <Label htmlFor="attendance-date">Fecha del Servicio</Label>
+                  <Input
+                    id="attendance-date"
+                    type="date"
+                    value={selectedDate}
+                    onChange={(e) => setSelectedDate(e.target.value)}
+                  />
                 </div>
-              )}
+                <div className="space-y-2">
+                  <Label htmlFor="service-type">Tipo de Servicio</Label>
+                  <select
+                    id="service-type"
+                    value={selectedServiceType}
+                    onChange={(e) => setSelectedServiceType(e.target.value as 'domingo' | 'miercoles' | 'especial')}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                  >
+                    <option value="domingo">Domingo</option>
+                    <option value="miercoles">Miércoles</option>
+                    <option value="especial">Servicio Especial</option>
+                  </select>
+                </div>
+              </div>
+
+              <div className="space-y-3">
+                <h3 className="text-lg font-semibold text-church-blue-dark">Lista de Asistencia</h3>
+                <div className="grid gap-3">
+                  {members.filter(member => member.status === 'active').map((member) => {
+                    const attendanceRecord = getAttendanceForMember(member.id, selectedDate, selectedServiceType);
+                    const isPresent = attendanceRecord?.present || false;
+                    
+                    return (
+                      <div key={member.id} className="flex items-center justify-between p-3 border rounded-lg bg-gray-50">
+                        <div className="flex items-center gap-3">
+                          <User className="h-5 w-5 text-church-gold" />
+                          <div>
+                            <span className="font-medium">{member.name}</span>
+                            <div className="text-sm text-gray-600">{member.ministry}</div>
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <Button
+                            size="sm"
+                            variant={isPresent ? "default" : "outline"}
+                            onClick={() => handleAttendanceToggle(member.id, true)}
+                            className={isPresent ? "bg-green-600 hover:bg-green-700 text-white" : ""}
+                          >
+                            <CheckCircle2 className="h-4 w-4 mr-1" />
+                            Presente
+                          </Button>
+                          <Button
+                            size="sm"
+                            variant={!isPresent && attendanceRecord ? "default" : "outline"}
+                            onClick={() => handleAttendanceToggle(member.id, false)}
+                            className={!isPresent && attendanceRecord ? "bg-red-600 hover:bg-red-700 text-white" : ""}
+                          >
+                            <XCircle className="h-4 w-4 mr-1" />
+                            Ausente
+                          </Button>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
             </CardContent>
           </Card>
-        ))}
-      </div>
-
-      {filteredMembers.length === 0 && (
-        <div className="text-center py-8 text-gray-500">
-          No se encontraron miembros que coincidan con la búsqueda.
-        </div>
-      )}
+        </TabsContent>
+      </Tabs>
     </div>
   );
 };
